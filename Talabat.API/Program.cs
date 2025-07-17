@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
 
 namespace Talabat.API
@@ -37,6 +38,9 @@ namespace Talabat.API
 				// If there are pending migrations, apply them.
 				if (pendingMigrations.Any())
 					await context.Database.MigrateAsync();
+
+				// Seed the database with initial data.
+				await StoreDbContextSeed.SeedAsync(context);
 			}
 			catch (Exception ex)
 			{
