@@ -22,8 +22,30 @@ namespace Talabat.API
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
+			// Create a scope to retrieve scoped services.
+			using var scope = app.Services.CreateScope();
+			var services = scope.ServiceProvider;
+
+			// Retrieve the StoreDbContext and ILoggerFactory from the service provider.
+			var context = services.GetRequiredService<StoreDbContext>();
+			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+			try
+			{
+				// Get any pending migrations for the database.
+				var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+				// If there are pending migrations, apply them.
+				if (pendingMigrations.Any())
+					await context.Database.MigrateAsync();
+			}
+			catch (Exception ex)
+			{
+				// Log any errors that occur during migration.
+				var logger = loggerFactory.CreateLogger<Program>();
+				logger.LogError(ex, "An error occurred during migration");
+			}
+				// Configure the HTTP request pipeline.
+				if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
             }
