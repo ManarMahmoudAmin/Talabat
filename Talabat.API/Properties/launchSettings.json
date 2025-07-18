@@ -1,13 +1,14 @@
 {
   "profiles": {
-    "http": {
+    "Talabat.API": {
       "commandName": "Project",
+      "launchBrowser": true,
       "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5123",
+      "dotnetRunMessages": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5123"
+      }
     },
     "IIS Express": {
       "commandName": "IISExpress",

@@ -11,7 +11,7 @@ using Talabat.Repository.Data.Dtos;
 
 namespace Talabat.Service.Services
 {
-	class ProductService : IProductService
+	public class ProductService : IProductService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;

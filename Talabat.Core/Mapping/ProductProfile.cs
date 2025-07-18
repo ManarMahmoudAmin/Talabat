@@ -9,7 +9,7 @@ using Talabat.Repository.Data.Dtos;
 
 namespace Talabat.Core.Mapping
 {
-    class ProductProfile : Profile
+    public class ProductProfile : Profile
     {
         public ProductProfile() {
             CreateMap<Product, ProductDto>().

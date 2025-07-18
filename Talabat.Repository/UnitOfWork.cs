@@ -11,7 +11,7 @@ using Talabat.Repository.Repositories;
 
 namespace Talabat.Repository
 {
-	class UnitOfWork : IUnitOfWork
+	public class UnitOfWork : IUnitOfWork
 	{
 		private readonly StoreDbContext _context;
 

@@ -1,8 +1,14 @@
 
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Talabat.Core.Mapping;
+using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
+using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
+using Talabat.Service.Services;
 
 namespace Talabat.API
 {
@@ -17,11 +23,15 @@ namespace Talabat.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
            
-            //builder.Services.AddOpenApi();
 
             builder.Services.AddDbContext<StoreDbContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+			builder.Services.AddScoped<IProductService, ProductService>();
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
+
+            builder.Services.AddOpenApi();
 			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
@@ -55,7 +65,7 @@ namespace Talabat.API
 				if (app.Environment.IsDevelopment())
             {
 
-				//app.MapOpenApi();
+				app.MapOpenApi();
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
