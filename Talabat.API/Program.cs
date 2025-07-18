@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
@@ -16,10 +17,12 @@ namespace Talabat.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
            
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
 
             builder.Services.AddDbContext<StoreDbContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
 
@@ -51,8 +54,11 @@ namespace Talabat.API
 				// Configure the HTTP request pipeline.
 				if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-            }
+
+				//app.MapOpenApi();
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
 
             app.UseAuthorization();
 

@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Talabat.Repository\Talabat.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
