@@ -1,20 +1,17 @@
 [
   {
-    "Name": "Chicken"
+    "CompanyName": "TechVision",
+    "CompanyLocation": "Cairo",
+    "UserId": "user1-id"
   },
   {
-    "Name": "Seafood"
+    "CompanyName": "InnoSoft",
+    "CompanyLocation": "Alexandria",
+    "UserId": "user2-id"
   },
   {
-    "Name": "Pasta and Noodles"
-  },
-  {
-    "Name": "Soup"
-  },
-  {
-    "Name": "Desserts"
-  },
-  {
-    "Name": "Vegetable"
+    "CompanyName": "SmartSolutions",
+    "CompanyLocation": "Giza",
+    "UserId": "user3-id"
   }
 ]

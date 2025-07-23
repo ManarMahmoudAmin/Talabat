@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,42 +12,27 @@ namespace Talabat.Repository.Data
 {
     public static class StoreDbContextSeed
     {
-        public static async Task SeedAsync(StoreDbContext context)
-        {
-			if (!context.Brands.Any())
-			{
-				//1.Read Data from files
-				var brandsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/brands.json");
-
-				//2. Convert Json string to list<T>
-				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
-
-				//3. Seed Data to Database
-				if (brands is not null && brands.Count() > 0)
-					await context.Brands.AddRangeAsync(brands);
-				await context.SaveChangesAsync();
-			}
-
-			if (!context.Types.Any())
-			{
-				var typesData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/types.json");
-				var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
-
-				if (types is not null && types.Count() > 0)
-					await context.Types.AddRangeAsync(types);
-				await context.SaveChangesAsync();
-			}
-
-			if (!context.Products.Any())
-			{
-				var productsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/products.json");
-				var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-
-				if(products is not null && products.Count() > 0)
-					await context.Products.AddRangeAsync(products);
-				await context.SaveChangesAsync();
-			}
+		public static async Task SeedAsync(StoreDbContext context)
+		{
+			await seedDataAsync<ProductBrand, int>(context, context.Brands, "../Talabat.Repository/Data/DataSeed/brands.json");
+			await seedDataAsync<ProductType, int>(context, context.Types, "../Talabat.Repository/Data/DataSeed/types.json");
+			await seedDataAsync<Product, int>(context, context.Products, "../Talabat.Repository/Data/DataSeed/products.json");
 
 		}
-    }
+		private static async Task seedDataAsync<TEntity, TKey>(StoreDbContext context, DbSet<TEntity> dbSet, string filePath)
+			where TEntity : BaseEntity<TKey>
+		{
+			if (!dbSet.Any())
+			{
+				var jsonData = File.ReadAllText(filePath);
+				var items = JsonSerializer.Deserialize<List<TEntity>>(jsonData);
+				if (items is not null && items.Count > 0)
+				{
+					await dbSet.AddRangeAsync(items);
+				}
+				await context.SaveChangesAsync();
+			}
+		}
+
+	}
 }
