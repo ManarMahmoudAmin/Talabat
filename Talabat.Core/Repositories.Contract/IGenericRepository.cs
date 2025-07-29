@@ -15,5 +15,10 @@ namespace Talabat.Core.Repositories.Contract
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
 		void Delete(TEntity entity);
-	}
+
+        #region With Specifications
+        Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications);
+        Task<TEntity> GetAsync(ISpecifications<TEntity, TKey> specifications); 
+        #endregion
+    }
 }

@@ -21,28 +21,29 @@ namespace Talabat.Repository.Repositories
 		}
 		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			if(typeof(TEntity) == typeof(Product))
-			{
-				return (IEnumerable<TEntity>) await _context.Products.
-					Include(p => p.Brand).
-					Include(p => p.Type).ToListAsync();
-			}
+			///if(typeof(TEntity) == typeof(Product))
+			///{
+			///	return (IEnumerable<TEntity>) await _context.Products.
+			///		Include(p => p.Brand).
+			///		Include(p => p.Type).ToListAsync();
+			///}
 
 			return await _context.Set<TEntity>().ToListAsync();
 		}
 
 		public async Task<TEntity> GetAsync(TKey id)
 		{
-			if (typeof(TEntity) == typeof(Product) && id is int productId)
-			{
-				var product = await _context.Products.
-					Include(p => p.Brand).
-					Include(p => p.Type)
-					.FirstOrDefaultAsync(p => p.Id == productId);
-
-				return product as TEntity;
-
-			}
+			///if (typeof(TEntity) == typeof(Product) && id is int productId)
+			///{
+			///	var product = await _context.Products.
+			///		Include(p => p.Brand).
+			///		Include(p => p.Type)
+			///		.FirstOrDefaultAsync(p => p.Id == productId);
+			///
+			///	return product as TEntity;
+			///
+			///}
+			
 			return await _context.Set<TEntity>().FindAsync(id);
 		}
 		public async Task AddAsync(TEntity entity)
@@ -59,7 +60,14 @@ namespace Talabat.Repository.Repositories
 			_context.Remove(entity);
 		}
 
+		#region With Specifications
+		public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
+			=> await SpecificationsEvaluator.GetQuery(_context.Set<TEntity>(), specifications).ToListAsync();
+		
 
+		public async Task<TEntity> GetAsync(ISpecifications<TEntity, TKey> specifications)
+			=> await SpecificationsEvaluator.GetQuery(_context.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+		#endregion
 	}
 
 }

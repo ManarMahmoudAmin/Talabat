@@ -1,0 +1,34 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Talabat.Core.Entities;
+using Talabat.Core.Repositories.Contract;
+
+namespace Talabat.Repository
+{
+    static class SpecificationsEvaluator
+    {
+		public static IQueryable<TEntity> GetQuery<TEntity, TKey>(IQueryable<TEntity> inputQuery, ISpecifications<TEntity,TKey> specifications)
+			where TEntity : BaseEntity<TKey>
+		{
+			var query = inputQuery;
+
+			if(specifications.Criteria is not null)
+				query = query.Where(specifications.Criteria);
+
+			if(specifications.Includes is not null && specifications.Includes.Count > 0)
+			{
+				///foreach (var include in specifications.Includes)
+				///{
+				///	query = query.Include(include);
+				///}
+
+				query = specifications.Includes.Aggregate(query, (currQuery, include) =>  currQuery.Include(include));
+			}
+			return query;
+		}
+	}
+}
