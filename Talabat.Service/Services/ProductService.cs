@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Talabat.API;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
@@ -22,9 +23,9 @@ namespace Talabat.Service.Services
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+		public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(int? brandId, int? typeId, SortingOptions sortingOption)
 		{
-			var spec = new ProductsWithFiltersSpecifications();
+			var spec = new ProductsWithFiltersSpecifications(brandId, typeId, sortingOption);
 			var products = await _unitOfWork.Repository<Product, int>().GetAllAsync(spec);
 			var mappedProducts = _mapper.Map<IEnumerable<ProductDto>>( products);
 			

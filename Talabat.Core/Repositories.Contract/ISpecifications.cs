@@ -12,5 +12,8 @@ namespace Talabat.Core.Repositories.Contract
 	{
 		public Expression<Func<TEntity,bool>>? Criteria { get; }
 		public List<Expression<Func<TEntity, object>>> Includes { get; }
+		public Expression<Func<TEntity, object>> Order { get; }
+		public Expression<Func<TEntity, object>> OrderDesc { get; }
+
 	}
 }

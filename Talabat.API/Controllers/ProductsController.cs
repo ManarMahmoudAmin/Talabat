@@ -17,9 +17,9 @@ namespace Talabat.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllProducts()
+		public async Task<IActionResult> GetAllProducts(int? brandId, int? typeId, SortingOptions sortingOption)
 		{
-			var result = await _productService.GetAllProductsAsync();
+			var result = await _productService.GetAllProductsAsync(brandId, typeId, sortingOption);
 			return Ok(result);
 		}
 
