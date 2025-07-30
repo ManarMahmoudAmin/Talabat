@@ -16,7 +16,8 @@ namespace Talabat.Repository.Specifications
 		// This constructor is used to get all products with their brands and types
 		public ProductsWithFiltersSpecifications(ProductQueryParameters queryParams) :
 			base(P => (!queryParams.brandId.HasValue || P.BrandId == queryParams.brandId) && 
-			           (!queryParams.typeId.HasValue || P.TypeId ==	queryParams.typeId ))
+			(!queryParams.typeId.HasValue || P.TypeId ==	queryParams.typeId ) &&
+			string.IsNullOrWhiteSpace(queryParams.searchValue) || P.Name.ToLower().Contains(queryParams.searchValue.ToLower()))
 		{
 			AddIncludes(P => P.Brand);	
 			AddIncludes(P => P.Type);	

@@ -12,5 +12,6 @@ namespace Talabat.Service
 		public int? brandId { get; set; }
 		public int? typeId { get; set; }
 		public SortingOptions sortingOption { get; set; }
+		public string? searchValue { get; set; }
 	}
 }
