@@ -1,4 +1,4 @@
-﻿namespace Talabat.API
+﻿namespace Talabat.Core.Shared
 {
 	public enum SortingOptions
 	{

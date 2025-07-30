@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Talabat.API;
 using Talabat.Core.Entities;
+using Talabat.Core.Shared;
+using Talabat.Service;
 using Talabat.Service.Specifications;
 
 namespace Talabat.Repository.Specifications
@@ -12,14 +14,14 @@ namespace Talabat.Repository.Specifications
     public class ProductsWithFiltersSpecifications : BaseSpecifications<Product, int>
 	{
 		// This constructor is used to get all products with their brands and types
-		public ProductsWithFiltersSpecifications(int? brandId, int? typeId, SortingOptions sortingOption) :
-			base(P => (!brandId.HasValue || P.BrandId == brandId) && 
-			           (!typeId.HasValue || P.TypeId == typeId))
+		public ProductsWithFiltersSpecifications(ProductQueryParameters queryParams) :
+			base(P => (!queryParams.brandId.HasValue || P.BrandId == queryParams.brandId) && 
+			           (!queryParams.typeId.HasValue || P.TypeId ==	queryParams.typeId ))
 		{
 			AddIncludes(P => P.Brand);	
 			AddIncludes(P => P.Type);	
 
-			switch(sortingOption)
+			switch(queryParams.sortingOption)
 			{
 				case SortingOptions.NameAsc:
 					AddOrderBy(P => P.Name);
