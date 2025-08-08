@@ -14,12 +14,12 @@ namespace Talabat.Repository.Data
     {
 		public static async Task SeedAsync(StoreDbContext context)
 		{
-			await seedDataAsync<ProductBrand, int>(context, context.Brands, "../Talabat.Repository/Data/DataSeed/brands.json");
-			await seedDataAsync<ProductType, int>(context, context.Types, "../Talabat.Repository/Data/DataSeed/types.json");
-			await seedDataAsync<Product, int>(context, context.Products, "../Talabat.Repository/Data/DataSeed/products.json");
+			await SeedDataAsync<ProductBrand, int>(context, context.Brands, "../Talabat.Repository/Data/DataSeed/brands.json");
+			await SeedDataAsync<ProductType, int>(context, context.Types, "../Talabat.Repository/Data/DataSeed/types.json");
+			await SeedDataAsync<Product, int>(context, context.Products, "../Talabat.Repository/Data/DataSeed/products.json");
 
 		}
-		private static async Task seedDataAsync<TEntity, TKey>(StoreDbContext context, DbSet<TEntity> dbSet, string filePath)
+		private static async Task SeedDataAsync<TEntity, TKey>(StoreDbContext context, DbSet<TEntity> dbSet, string filePath)
 			where TEntity : BaseEntity<TKey>
 		{
 			if (!dbSet.Any())

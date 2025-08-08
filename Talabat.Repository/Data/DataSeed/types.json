@@ -1,14 +1,26 @@
 [
   {
-    "Name": "Italian"
+    "Name": "Frappuccino"
   },
   {
-    "Name": "Mexican"
+    "Name": "Latte"
   },
   {
-    "Name": "Indian"
+    "Name": "Mocha"
   },
   {
-    "Name": "Chinese"
+    "Name": "Macchiato"
+  },
+  {
+    "Name": "Matcha"
+  },
+  {
+    "Name": "Cake"
+  },
+  {
+    "Name": "Donuts"
+  },
+  {
+    "Name": "Salad"
   }
 ]

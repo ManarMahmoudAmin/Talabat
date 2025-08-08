@@ -2,12 +2,14 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Talabat.Core.Mapping;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
+using Talabat.Service.Mapping;
+using Talabat.Service.Mapping.Profiles;
+using Talabat.Service.Mapping.Resolvers;
 using Talabat.Service.Services;
 
 namespace Talabat.API
@@ -29,6 +31,7 @@ namespace Talabat.API
 			builder.Services.AddScoped<IProductService, ProductService>();
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
+			builder.Services.AddScoped<ProductPictureUrlResolver>();
 
             builder.Services.AddOpenApi();
 			builder.Services.AddSwaggerGen();

@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Talabat.Core.Data.Dtos;
 using Talabat.Core.Entities;
-using Talabat.Repository.Data.Dtos;
+using Talabat.Service.Mapping.Resolvers;
 
-namespace Talabat.Core.Mapping
+namespace Talabat.Service.Mapping.Profiles
 {
     public class ProductProfile : Profile
     {
         public ProductProfile() {
             CreateMap<Product, ProductDto>().
-                ForMember(d => d.BrandName, 
-                option => option.MapFrom(s => s.Brand.Name));
+                ForMember(dest => dest.BrandName, op => op.MapFrom(src => src.Brand.Name))
+                .ForMember(dest => dest.PictureUrl, op => op.MapFrom<ProductPictureUrlResolver>());
 
             CreateMap<ProductBrand, BrandTypeDto>();
             

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Talabat.Core.Data.Dtos;
 using Talabat.Core.Entities;
-using Talabat.Repository.Data.Dtos;
+
 using Talabat.Service;
 
 namespace Talabat.Core.Services.Contract

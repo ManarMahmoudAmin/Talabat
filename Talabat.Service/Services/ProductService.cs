@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Talabat.Core.Data.Dtos;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Core.Shared;
-using Talabat.Repository.Data.Dtos;
 using Talabat.Repository.Specifications;
 
 namespace Talabat.Service.Services
