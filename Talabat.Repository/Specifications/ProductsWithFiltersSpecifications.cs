@@ -16,14 +16,14 @@ namespace Talabat.Repository.Specifications
 		// This constructor is used to get all products with their brands and types
 		public ProductsWithFiltersSpecifications(ProductQueryParameters queryParams) :
 			base(P => 
-			(!queryParams.brandId.HasValue || P.BrandId == queryParams.brandId) && 
-			(!queryParams.typeId.HasValue || P.TypeId == queryParams.typeId ) &&
-			(string.IsNullOrWhiteSpace(queryParams.searchValue) || P.Name.ToLower().Contains(queryParams.searchValue.ToLower())))
+			(!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId) && 
+			(!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId ) &&
+			(string.IsNullOrWhiteSpace(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
 		{
 			AddIncludes(P => P.Brand);	
 			AddIncludes(P => P.Type);	
 
-			switch(queryParams.sortingOption)
+			switch(queryParams.SortingOption)
 			{
 				case SortingOptions.NameAsc:
 					AddOrderBy(P => P.Name);
@@ -40,6 +40,8 @@ namespace Talabat.Repository.Specifications
 				default:
 					break;
 			}
+
+			ApplyPagination(queryParams.PageIndex, queryParams.PageSize);
 		}
 
 		// This constructor is used to get product by its id with its brand and its type

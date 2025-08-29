@@ -18,7 +18,8 @@ namespace Talabat.Core.Repositories.Contract
 
         #region With Specifications
         Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications);
-        Task<TEntity> GetAsync(ISpecifications<TEntity, TKey> specifications); 
-        #endregion
-    }
+        Task<TEntity> GetAsync(ISpecifications<TEntity, TKey> specifications);
+        Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications);
+		#endregion
+	}
 }

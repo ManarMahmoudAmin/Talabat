@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Talabat.Core.Data.Dtos;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Shared;
 using Talabat.Service;
 
 namespace Talabat.API.Controllers
@@ -18,7 +20,7 @@ namespace Talabat.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllProducts([FromQuery] ProductQueryParameters queryParams)
+		public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParameters queryParams)
 		{
 			var result = await _productService.GetAllProductsAsync(queryParams);
 			return Ok(result);

@@ -23,13 +23,15 @@ namespace Talabat.Service.Services
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParameters queryParams)
+		public async Task<PaginatedResult<ProductDto>> GetAllProductsAsync(ProductQueryParameters queryParams)
 		{
+			var repo = _unitOfWork.Repository<Product, int>();
 			var spec = new ProductsWithFiltersSpecifications(queryParams);
-			var products = await _unitOfWork.Repository<Product, int>().GetAllAsync(spec);
+			var products = await repo.GetAllAsync(spec);
 			var mappedProducts = _mapper.Map<IEnumerable<ProductDto>>( products);
-			
-			return mappedProducts;
+			var productCount = mappedProducts.Count();
+			var totalCount = await repo.CountAsync(new ProductsCountSpecification(queryParams));
+			return new PaginatedResult<ProductDto>(queryParams.PageIndex, productCount, totalCount, mappedProducts);
 		}
 
 		public async Task<IEnumerable<BrandTypeDto>> GetAllBrandsAsync()

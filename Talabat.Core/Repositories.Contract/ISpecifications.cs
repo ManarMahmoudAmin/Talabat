@@ -14,6 +14,10 @@ namespace Talabat.Core.Repositories.Contract
 		public List<Expression<Func<TEntity, object>>> Includes { get; }
 		public Expression<Func<TEntity, object>> Order { get; }
 		public Expression<Func<TEntity, object>> OrderDesc { get; }
+		public bool IsPaginated { get; set; }
+		public int Skip { get; }
+		public int Take { get; }
+
 
 	}
 }

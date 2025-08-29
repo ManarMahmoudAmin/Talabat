@@ -11,7 +11,7 @@ namespace Talabat.Repository
 {
     static class SpecificationsEvaluator
     {
-		public static IQueryable<TEntity> GetQuery<TEntity, TKey>(IQueryable<TEntity> inputQuery, ISpecifications<TEntity,TKey> specifications)
+		public static IQueryable<TEntity> CreateQuery<TEntity, TKey>(IQueryable<TEntity> inputQuery, ISpecifications<TEntity,TKey> specifications)
 			where TEntity : BaseEntity<TKey>
 		{
 			var query = inputQuery;
@@ -34,6 +34,10 @@ namespace Talabat.Repository
 
 				query = specifications.Includes.Aggregate(query, (currQuery, include) =>  currQuery.Include(include));
 			}
+
+			if(specifications.IsPaginated)
+				query = query.Skip(specifications.Skip).Take(specifications.Take);
+
 			return query;
 		}
 	}

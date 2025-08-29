@@ -21,6 +21,9 @@ namespace Talabat.Service.Specifications
 		public List<Expression<Func<TEntity, object>>> Includes { get; } = [];
 		public Expression<Func<TEntity, object>> Order { get; private set; }
 		public Expression<Func<TEntity, object>> OrderDesc { get; private set; }
+		public int Skip { get; private set; }
+		public int Take { get; private set; }
+		public bool IsPaginated { get; set; } 
 
 		#region Methods
 		protected void AddIncludes(Expression<Func<TEntity, object>> include)
@@ -39,6 +42,13 @@ namespace Talabat.Service.Specifications
 			if (orderDesc is not null)
 				OrderDesc = orderDesc;
 		}
+
+		protected void ApplyPagination(int pageIndex, int pageSize)
+		{
+			IsPaginated = true;
+			Take = pageSize;
+			Skip = (pageIndex - 1) * pageSize;
+		} 
 		#endregion
 	}
 }

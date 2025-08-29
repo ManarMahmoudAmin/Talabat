@@ -21,28 +21,13 @@ namespace Talabat.Repository.Repositories
 		}
 		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			///if(typeof(TEntity) == typeof(Product))
-			///{
-			///	return (IEnumerable<TEntity>) await _context.Products.
-			///		Include(p => p.Brand).
-			///		Include(p => p.Type).ToListAsync();
-			///}
-
+		
 			return await _context.Set<TEntity>().ToListAsync();
 		}
 
 		public async Task<TEntity> GetAsync(TKey id)
 		{
-			///if (typeof(TEntity) == typeof(Product) && id is int productId)
-			///{
-			///	var product = await _context.Products.
-			///		Include(p => p.Brand).
-			///		Include(p => p.Type)
-			///		.FirstOrDefaultAsync(p => p.Id == productId);
-			///
-			///	return product as TEntity;
-			///
-			///}
+	
 			
 			return await _context.Set<TEntity>().FindAsync(id);
 		}
@@ -62,11 +47,14 @@ namespace Talabat.Repository.Repositories
 
 		#region With Specifications
 		public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
-			=> await SpecificationsEvaluator.GetQuery(_context.Set<TEntity>(), specifications).ToListAsync();
+			=> await SpecificationsEvaluator.CreateQuery(_context.Set<TEntity>(), specifications).ToListAsync();
 		
 
 		public async Task<TEntity> GetAsync(ISpecifications<TEntity, TKey> specifications)
-			=> await SpecificationsEvaluator.GetQuery(_context.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+			=> await SpecificationsEvaluator.CreateQuery(_context.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+
+		public async Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications)
+			=> await SpecificationsEvaluator.CreateQuery(_context.Set<TEntity>(), specifications).CountAsync();
 		#endregion
 	}
 
