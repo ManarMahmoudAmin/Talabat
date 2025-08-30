@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Talabat.API.CustomMiddlewares;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Repository;
@@ -63,7 +64,9 @@ namespace Talabat.API
 				var logger = loggerFactory.CreateLogger<Program>();
 				logger.LogError(ex, "An error occurred during migration");
 			}
-				// Configure the HTTP request pipeline.
+			// Configure the HTTP request pipeline.
+			app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+
 				if (app.Environment.IsDevelopment())
             {
 
