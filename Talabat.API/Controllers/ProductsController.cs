@@ -46,10 +46,6 @@ namespace Talabat.API.Controllers
 				return BadRequest("Invalid Product Id");
 
 			var result = await _productService.GetProductByIdAsync(id.Value);
-
-			if (result is null)
-				return NotFound($"Product with Id {id} not found");
-
 			return Ok(result);
 		}
 	}

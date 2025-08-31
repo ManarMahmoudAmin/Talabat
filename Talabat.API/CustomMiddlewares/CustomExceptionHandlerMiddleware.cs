@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Talabat.Core.Exceptions;
 using Talabat.Core.Shared.ErrorModels;
 
 namespace Talabat.API.CustomMiddlewares
@@ -27,7 +28,13 @@ namespace Talabat.API.CustomMiddlewares
 
 				///set status code for response
 				//context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+				context.Response.StatusCode = ex switch
+				{
+					 NotFoundException => StatusCodes.Status404NotFound, 
+					 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+					 BadRequestException => StatusCodes.Status400BadRequest,
+					_ => StatusCodes.Status500InternalServerError
+				};
 
 				///set content type for response
 				//context.Response.ContentType = "application/json";
@@ -35,7 +42,7 @@ namespace Talabat.API.CustomMiddlewares
 				//create reponse object
 				var response = new ErrorToReturn()
 				{
-					StatusCode = StatusCodes.Status500InternalServerError,
+					StatusCode = context.Response.StatusCode,
 					ErrorMessage = ex.Message
 				};
 
