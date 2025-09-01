@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Data.Dtos;
 using Talabat.Core.Entities;
+using Talabat.Core.Exceptions;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Core.Shared;
@@ -54,6 +55,8 @@ namespace Talabat.Service.Services
 		{
 			var spec = new ProductsWithFiltersSpecifications(id);
 			var product = await _unitOfWork.Repository<Product, int>().GetAsync(spec);
+			if (product == null)
+				throw new ProductNotFoundException(id);
 			var mappedProduct = _mapper.Map<ProductDto>(product);
 	
 			return mappedProduct;
