@@ -1,10 +1,13 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Talabat.API.CustomMiddlewares;
+using Talabat.API.Factories;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Shared.ErrorModels;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
@@ -36,6 +39,11 @@ namespace Talabat.API
 
             builder.Services.AddOpenApi();
 			builder.Services.AddSwaggerGen();
+
+			builder.Services.Configure<ApiBehaviorOptions>((options) =>
+			{
+				options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
+			});
 
 			var app = builder.Build();
 
