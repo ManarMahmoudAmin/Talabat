@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using Talabat.Core.Entities;
+using Talabat.Core.Entities.ProductModule;
 
 namespace Talabat.Repository.Data.Contexts
 {

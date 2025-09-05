@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.ProductModule;
 using Talabat.Repository.Data.Contexts;
 
 namespace Talabat.Repository.Data

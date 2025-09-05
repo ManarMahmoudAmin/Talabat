@@ -1,4 +1,4 @@
-﻿namespace Talabat.Core.Entities
+﻿namespace Talabat.Core.Entities.ProductModule
 {
     public class ProductBrand : BaseEntity<int>
     {

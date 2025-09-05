@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Talabat.Core.Entities
+namespace Talabat.Core.Entities.ProductModule
 {
     public class Product : BaseEntity<int>
 	{

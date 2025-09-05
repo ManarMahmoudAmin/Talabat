@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Data.Dtos;
-using Talabat.Core.Entities;
+using Talabat.Core.Entities.ProductModule;
 using Talabat.Core.Exceptions;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;

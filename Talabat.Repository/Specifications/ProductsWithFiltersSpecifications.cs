@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Talabat.Core.Entities;
+using Talabat.Core.Entities.ProductModule;
 using Talabat.Core.Shared;
 using Talabat.Service;
 using Talabat.Service.Specifications;
