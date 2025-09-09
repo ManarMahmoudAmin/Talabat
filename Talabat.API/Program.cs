@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Talabat.API.CustomMiddlewares;
 using Talabat.API.Factories;
 using Talabat.Core.Repositories.Contract;
@@ -36,6 +37,11 @@ namespace Talabat.API
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
 			builder.Services.AddScoped<ProductPictureUrlResolver>();
+
+			builder.Services.AddSingleton<IConnectionMultiplexer>((_) =>
+			{
+				return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection"));
+			});
 
             builder.Services.AddOpenApi();
 			builder.Services.AddSwaggerGen();
