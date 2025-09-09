@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Talabat.Core.Data.Dtos
+namespace Talabat.Core.Dtos.ProductDtos
 {
     public class BrandTypeDto
     {

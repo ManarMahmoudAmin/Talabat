@@ -1,4 +1,4 @@
-﻿namespace Talabat.Core.Data.Dtos
+﻿namespace Talabat.Core.Dtos.ProductDtos
 {
     public class ProductDto
     {

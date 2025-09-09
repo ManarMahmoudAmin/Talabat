@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Talabat.Core.Data.Dtos;
+using Talabat.Core.Dtos.ProductDtos;
 using Talabat.Core.Services.Contract;
 using Talabat.Core.Shared;
 using Talabat.Service;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Talabat.Core.Data.Dtos;
+using Talabat.Core.Dtos.ProductDtos;
 using Talabat.Core.Entities.ProductModule;
 using Talabat.Service.Mapping.Resolvers;
 

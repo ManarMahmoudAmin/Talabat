@@ -12,6 +12,7 @@ using Talabat.Core.Shared.ErrorModels;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Data.Contexts;
+using Talabat.Repository.Repositories;
 using Talabat.Service.Mapping;
 using Talabat.Service.Mapping.Profiles;
 using Talabat.Service.Mapping.Resolvers;
@@ -33,9 +34,12 @@ namespace Talabat.API
             builder.Services.AddDbContext<StoreDbContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+			builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 			builder.Services.AddScoped<IProductService, ProductService>();
+			builder.Services.AddScoped<IBasketService, BasketService>();
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
+			builder.Services.AddAutoMapper(M => M.AddProfile(new BasketProfile()));
 			builder.Services.AddScoped<ProductPictureUrlResolver>();
 
 			builder.Services.AddSingleton<IConnectionMultiplexer>((_) =>
