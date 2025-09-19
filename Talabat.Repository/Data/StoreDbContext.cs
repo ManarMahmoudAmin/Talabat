@@ -2,7 +2,7 @@
 using System.Reflection;
 using Talabat.Core.Entities.ProductModule;
 
-namespace Talabat.Repository.Data.Contexts
+namespace Talabat.Repository.Data
 {
     public class StoreDbContext : DbContext
     {

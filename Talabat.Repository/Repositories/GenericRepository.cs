@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contract;
-using Talabat.Repository.Data.Contexts;
+using Talabat.Repository.Data;
 
 namespace Talabat.Repository.Repositories
 {

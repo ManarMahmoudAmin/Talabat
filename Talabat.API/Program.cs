@@ -11,7 +11,7 @@ using Talabat.Core.Services.Contract;
 using Talabat.Core.Shared.ErrorModels;
 using Talabat.Repository;
 using Talabat.Repository.Data;
-using Talabat.Repository.Data.Contexts;
+using Talabat.Repository.Identity;
 using Talabat.Repository.Repositories;
 using Talabat.Service.Mapping;
 using Talabat.Service.Mapping.Profiles;
@@ -33,6 +33,9 @@ namespace Talabat.API
 
             builder.Services.AddDbContext<StoreDbContext>(options =>
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+			builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+			options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
 			builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 			builder.Services.AddScoped<IProductService, ProductService>();
@@ -63,6 +66,7 @@ namespace Talabat.API
 
 			// Retrieve the StoreDbContext and ILoggerFactory from the service provider.
 			var context = services.GetRequiredService<StoreDbContext>();
+			var identityContext = services.GetRequiredService<StoreIdentityDbContext>();
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
 			try
@@ -72,6 +76,9 @@ namespace Talabat.API
 				// If there are pending migrations, apply them.
 				if (pendingMigrations.Any())
 					await context.Database.MigrateAsync();
+				var pendingIdentityMigrations = await identityContext.Database.GetPendingMigrationsAsync();
+				if (pendingIdentityMigrations.Any())
+					await identityContext.Database.MigrateAsync();
 
 				// Seed the database with initial data.
 				await StoreDbContextSeed.SeedAsync(context);
