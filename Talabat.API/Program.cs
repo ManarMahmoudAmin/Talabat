@@ -1,11 +1,13 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Talabat.API.CustomMiddlewares;
 using Talabat.API.Factories;
+using Talabat.Core.Entities.IdentityModule;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Core.Shared.ErrorModels;
@@ -58,6 +60,9 @@ namespace Talabat.API
 				options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
 			});
 
+			builder.Services.AddIdentity<AppUser, IdentityRole>()
+				.AddEntityFrameworkStores<StoreIdentityDbContext>();
+
 			var app = builder.Build();
 
 			// Create a scope to retrieve scoped services.
@@ -67,6 +72,7 @@ namespace Talabat.API
 			// Retrieve the StoreDbContext and ILoggerFactory from the service provider.
 			var context = services.GetRequiredService<StoreDbContext>();
 			var identityContext = services.GetRequiredService<StoreIdentityDbContext>();
+			var userManager = services.GetRequiredService<UserManager<AppUser>>();
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
 			try
@@ -76,12 +82,14 @@ namespace Talabat.API
 				// If there are pending migrations, apply them.
 				if (pendingMigrations.Any())
 					await context.Database.MigrateAsync();
+				
 				var pendingIdentityMigrations = await identityContext.Database.GetPendingMigrationsAsync();
 				if (pendingIdentityMigrations.Any())
 					await identityContext.Database.MigrateAsync();
 
 				// Seed the database with initial data.
 				await StoreDbContextSeed.SeedAsync(context);
+				await StoreIdentityDbContextSeed.UserSeedAsync(userManager);
 			}
 			catch (Exception ex)
 			{
