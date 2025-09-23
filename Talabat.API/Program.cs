@@ -42,6 +42,9 @@ namespace Talabat.API
 			builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 			builder.Services.AddScoped<IProductService, ProductService>();
 			builder.Services.AddScoped<IBasketService, BasketService>();
+			builder.Services.AddScoped<ITokenService, TokenService>();
+			builder.Services.AddScoped<IAuthService, AuthService>();
+
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
 			builder.Services.AddAutoMapper(M => M.AddProfile(new BasketProfile()));
@@ -62,6 +65,8 @@ namespace Talabat.API
 
 			builder.Services.AddIdentity<AppUser, IdentityRole>()
 				.AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+			builder.Services.AddAuthentication();
 
 			var app = builder.Build();
 
