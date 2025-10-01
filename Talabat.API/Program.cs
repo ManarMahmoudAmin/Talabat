@@ -1,10 +1,13 @@
 
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
 using Talabat.API.CustomMiddlewares;
 using Talabat.API.Factories;
 using Talabat.Core.Entities.IdentityModule;
@@ -66,7 +69,22 @@ namespace Talabat.API
 			builder.Services.AddIdentity<AppUser, IdentityRole>()
 				.AddEntityFrameworkStores<StoreIdentityDbContext>();
 
-			builder.Services.AddAuthentication();
+			builder.Services.AddAuthentication(configOptions =>
+			{
+				configOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				configOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+				.AddJwtBearer(configOptions => 
+				configOptions.TokenValidationParameters = new TokenValidationParameters()
+				{
+					ValidateIssuer = true,
+					ValidIssuer = builder.Configuration["JWT:Issuer"],
+					ValidateAudience = true,
+					ValidAudience = builder.Configuration["JWT:Audience"],
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+				});
 
 			var app = builder.Build();
 
@@ -112,7 +130,9 @@ namespace Talabat.API
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+			app.UseStaticFiles();
 
+			app.UseAuthentication();
             app.UseAuthorization();
 
 

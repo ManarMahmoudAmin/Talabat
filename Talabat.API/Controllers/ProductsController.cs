@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Talabat.Core.Dtos.ProductDtos;
@@ -20,6 +22,7 @@ namespace Talabat.API.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParameters queryParams)
 		{
 			var result = await _productService.GetAllProductsAsync(queryParams);
