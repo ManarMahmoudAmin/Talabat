@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Dtos.AuthDto;
@@ -79,6 +80,18 @@ namespace Talabat.Service.Services
 		}
 		public async Task<bool> CheckEmailExists(string email)
 			=> await _userManager.FindByEmailAsync(email) is not null;
-		
+
+		public async Task<UserDto> GetCurrentUser(ClaimsPrincipal claimsPrincipal)
+		{
+			var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);	
+			var user = await _userManager.FindByEmailAsync(email!);
+
+			return new UserDto()
+			{
+				Email = user.Email,
+				DisplayName = user.DisplayName,
+				Token = await _tokenService.CreateTokenAsync(user, _userManager)
+			};
+		}
 	}
 }

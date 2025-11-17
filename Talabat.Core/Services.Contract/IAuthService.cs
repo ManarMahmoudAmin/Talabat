@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Dtos.AuthDto;
@@ -12,5 +13,6 @@ namespace Talabat.Core.Services.Contract
         Task<UserDto> RegisterAsync(RegisterDto registerDto);
         Task<UserDto> LoginAsync(LoginDto loginDto);
         Task<bool> CheckEmailExists(string email);
+        Task<UserDto> GetCurrentUser(ClaimsPrincipal claimsPrincipal);
     }
 }

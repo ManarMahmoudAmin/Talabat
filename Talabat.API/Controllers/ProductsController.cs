@@ -22,7 +22,6 @@ namespace Talabat.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
 		public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParameters queryParams)
 		{
 			var result = await _productService.GetAllProductsAsync(queryParams);
