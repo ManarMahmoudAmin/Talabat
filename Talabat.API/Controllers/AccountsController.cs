@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Talabat.Core.Dtos.AuthDto;
+using Talabat.Core.Entities.IdentityModule;
 using Talabat.Core.Services.Contract;
 
 namespace Talabat.API.Controllers
@@ -41,6 +43,15 @@ namespace Talabat.API.Controllers
 			var result = await _authService.GetCurrentUser(User);
 			return Ok(result);
 
+		}
+
+		//GET : api/Accounts/CurrentUserAddress
+		[Authorize]
+		[HttpGet("CurrentUserAddress")]
+		public async Task<ActionResult<AddressDto>> GetCurrentUserAddress()
+		{
+			var result = await _authService.GetCurrentAddress(User);
+			return Ok(result);
 		}
 	}
 }

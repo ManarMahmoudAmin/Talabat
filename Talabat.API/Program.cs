@@ -51,6 +51,7 @@ namespace Talabat.API
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
 			builder.Services.AddAutoMapper(M => M.AddProfile(new BasketProfile()));
+			builder.Services.AddAutoMapper(M => M.AddProfile(new AddressProfile()));
 			builder.Services.AddScoped<ProductPictureUrlResolver>();
 
 			builder.Services.AddSingleton<IConnectionMultiplexer>((_) =>
