@@ -50,7 +50,16 @@ namespace Talabat.API.Controllers
 		[HttpGet("CurrentUserAddress")]
 		public async Task<ActionResult<AddressDto>> GetCurrentUserAddress()
 		{
-			var result = await _authService.GetCurrentAddress(User);
+			var result = await _authService.GetCurrentUserAddress(User);
+			return Ok(result);
+		}
+
+		//PUT : api/Accounts/Address
+		[Authorize]
+		[HttpPut("Address")]
+		public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto updatedAddress)
+		{
+			var result = await _authService.UpdateUserAddress(User, updatedAddress);
 			return Ok(result);
 		}
 	}

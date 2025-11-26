@@ -43,7 +43,7 @@ namespace Talabat.API.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		public async Task<IActionResult> getProduct(int? id) {
+		public async Task<IActionResult> GetProduct(int? id) {
 			if(id is null)
 				return BadRequest("Invalid Product Id");
 

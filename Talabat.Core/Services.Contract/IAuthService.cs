@@ -15,6 +15,8 @@ namespace Talabat.Core.Services.Contract
         Task<UserDto> LoginAsync(LoginDto loginDto);
         Task<bool> CheckEmailExists(string email);
         Task<UserDto> GetCurrentUser(ClaimsPrincipal claimsPrincipal);
-        Task<AddressDto> GetCurrentAddress(ClaimsPrincipal claimsPrincipal);
-    }
+        Task<AddressDto> GetCurrentUserAddress(ClaimsPrincipal claimsPrincipal);
+        Task<AddressDto> UpdateUserAddress(ClaimsPrincipal User, AddressDto updatedAddress);
+
+	}
 }

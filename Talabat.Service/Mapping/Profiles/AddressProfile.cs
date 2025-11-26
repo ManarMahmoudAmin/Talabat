@@ -13,7 +13,7 @@ namespace Talabat.Service.Mapping.Profiles
     {
         public AddressProfile()
         {
-            CreateMap<Address, AddressDto>();
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }

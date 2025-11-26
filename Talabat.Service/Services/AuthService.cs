@@ -99,13 +99,28 @@ namespace Talabat.Service.Services
 			};
 		}
 
-		public async Task<AddressDto> GetCurrentAddress(ClaimsPrincipal claimsPrincipal)
+		public async Task<AddressDto> GetCurrentUserAddress(ClaimsPrincipal claimsPrincipal)
 		{
 			//var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
 			//var user = await _userManager.FindByEmailAsync(email!);
-			var user = await _userManager.FindUserWithAddress(claimsPrincipal);
+			var user = await _userManager.FindUserWithAddressAsync(claimsPrincipal);
 			var mappedAddress = _mapper.Map<AddressDto>(user.Address);
 			return mappedAddress;
 		}
+
+		public async Task<AddressDto> UpdateUserAddress(ClaimsPrincipal User, AddressDto updatedAddress)
+		{
+			var user = await _userManager.FindUserWithAddressAsync(User);
+			var mappedAddress = _mapper.Map<Address>(updatedAddress);
+			mappedAddress.Id = user.Address.Id;
+			user.Address = mappedAddress;
+			var result = await _userManager.UpdateAsync(user);
+			if (!result.Succeeded)
+				throw new BadRequestException("Address is not found");
+
+			return updatedAddress;
+
+		}
+
 	}
 }
