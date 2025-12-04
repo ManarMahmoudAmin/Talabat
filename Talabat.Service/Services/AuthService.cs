@@ -59,7 +59,7 @@ namespace Talabat.Service.Services
 		public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
 		{
 			if (await CheckEmailExists(registerDto.Email))
-				throw new BadRequestException($"{registerDto.Email} is already in use");
+				return null;
 			var user = new AppUser()
 			{
 				Email = registerDto.Email,

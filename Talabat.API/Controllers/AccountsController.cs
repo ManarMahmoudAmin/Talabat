@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Talabat.Core.Dtos.AuthDto;
 using Talabat.Core.Entities.IdentityModule;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Shared.ErrorModels;
 
 namespace Talabat.API.Controllers
 {
@@ -32,6 +33,13 @@ namespace Talabat.API.Controllers
 		public async Task<ActionResult<UserDto>> Register(RegisterDto model)
 		{
 			var result = await _authService.RegisterAsync(model);
+			if (result is null)
+			{
+				return BadRequest(new ErrorToReturn()
+				{
+					StatusCode = 400, ErrorMessage = $"{model.Email} is already in use"
+				});
+			}
 			return Ok(result);
 		}
 
@@ -61,6 +69,13 @@ namespace Talabat.API.Controllers
 		{
 			var result = await _authService.UpdateUserAddress(User, updatedAddress);
 			return Ok(result);
+		}
+
+		//GET : api/Accounts/EmailExists
+		[HttpGet("EmailExists")]
+		public async Task<ActionResult<bool>> CheckEmailExists(string email)
+		{
+			return await _authService.CheckEmailExists(email);
 		}
 	}
 }
