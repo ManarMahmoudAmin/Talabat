@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
 using Talabat.API.CustomMiddlewares;
+using Talabat.API.Extensions;
 using Talabat.API.Factories;
 using Talabat.Core.Entities.IdentityModule;
 using Talabat.Core.Repositories.Contract;
@@ -18,6 +19,7 @@ using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Identity;
 using Talabat.Repository.Repositories;
+using Talabat.Service.Extensions;
 using Talabat.Service.Mapping;
 using Talabat.Service.Mapping.Profiles;
 using Talabat.Service.Mapping.Resolvers;
@@ -34,108 +36,31 @@ namespace Talabat.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-           
+			builder.Services.AddInfrastructureServices(builder.Configuration);
+			builder.Services.AddApplicationServices();
+			builder.Services.AddMappingProfiles();
 
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			builder.Services.AddSwaggerServices();
 
-			builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+			builder.Services.AddWebApplicationServices();
 
-			builder.Services.AddScoped<IBasketRepository, BasketRepository>();
-			builder.Services.AddScoped<IProductService, ProductService>();
-			builder.Services.AddScoped<IBasketService, BasketService>();
-			builder.Services.AddScoped<ITokenService, TokenService>();
-			builder.Services.AddScoped<IAuthService, AuthService>();
-
-			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-			builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile()));
-			builder.Services.AddAutoMapper(M => M.AddProfile(new BasketProfile()));
-			builder.Services.AddAutoMapper(M => M.AddProfile(new AddressProfile()));
-			builder.Services.AddScoped<ProductPictureUrlResolver>();
-
-			builder.Services.AddSingleton<IConnectionMultiplexer>((_) =>
-			{
-				return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection"));
-			});
-
-            builder.Services.AddOpenApi();
-			builder.Services.AddSwaggerGen();
-
-			builder.Services.Configure<ApiBehaviorOptions>((options) =>
-			{
-				options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
-			});
-
-			builder.Services.AddIdentity<AppUser, IdentityRole>()
-				.AddEntityFrameworkStores<StoreIdentityDbContext>();
-
-			builder.Services.AddAuthentication(configOptions =>
-			{
-				configOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-				configOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-				.AddJwtBearer(configOptions => 
-				configOptions.TokenValidationParameters = new TokenValidationParameters()
-				{
-					ValidateIssuer = true,
-					ValidIssuer = builder.Configuration["JWT:Issuer"],
-					ValidateAudience = true,
-					ValidAudience = builder.Configuration["JWT:Audience"],
-					ValidateLifetime = true,
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-				});
+			builder.Services.AddIdentityServices(builder.Configuration);
 
 			var app = builder.Build();
-
-			// Create a scope to retrieve scoped services.
-			using var scope = app.Services.CreateScope();
-			var services = scope.ServiceProvider;
-
-			// Retrieve the StoreDbContext and ILoggerFactory from the service provider.
-			var context = services.GetRequiredService<StoreDbContext>();
-			var identityContext = services.GetRequiredService<StoreIdentityDbContext>();
-			var userManager = services.GetRequiredService<UserManager<AppUser>>();
-			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-
-			try
-			{
-				// Get any pending migrations for the database.
-				var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-				// If there are pending migrations, apply them.
-				if (pendingMigrations.Any())
-					await context.Database.MigrateAsync();
-				
-				var pendingIdentityMigrations = await identityContext.Database.GetPendingMigrationsAsync();
-				if (pendingIdentityMigrations.Any())
-					await identityContext.Database.MigrateAsync();
-
-				// Seed the database with initial data.
-				await StoreDbContextSeed.SeedAsync(context);
-				await StoreIdentityDbContextSeed.UserSeedAsync(userManager);
-			}
-			catch (Exception ex)
-			{
-				// Log any errors that occur during migration.
-				var logger = loggerFactory.CreateLogger<Program>();
-				logger.LogError(ex, "An error occurred during migration");
-			}
+			await app.SeedDataAsync();
+			
 			// Configure the HTTP request pipeline.
-			app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+			app.UseCustomExceptionMiddlewares();
 
 				if (app.Environment.IsDevelopment())
             {
 
-				app.MapOpenApi();
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddlewares();
 			}
 			app.UseStaticFiles();
 
 			app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
