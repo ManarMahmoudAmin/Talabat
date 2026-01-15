@@ -22,8 +22,11 @@ namespace Talabat.Repository
 			_context = context;
 			_repositories = new Hashtable();
 		}
-		public Task<int> CompleteAsync()
-			=> _context.SaveChangesAsync();
+		public async Task<int> CompleteAsync()
+			=> await _context.SaveChangesAsync();
+
+		public async ValueTask DisposeAsync()
+			=> await _context.DisposeAsync();
 
 
 		public IGenericRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : BaseEntity<TKey>

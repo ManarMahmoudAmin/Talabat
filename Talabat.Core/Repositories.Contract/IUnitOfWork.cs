@@ -7,7 +7,7 @@ using Talabat.Core.Entities;
 
 namespace Talabat.Core.Repositories.Contract
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IAsyncDisposable
     {
         Task<int> CompleteAsync();
 
