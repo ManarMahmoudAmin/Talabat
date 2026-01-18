@@ -16,6 +16,7 @@ namespace Talabat.Service.Extensions
 			Services.AddScoped<IBasketService, BasketService>();
 			Services.AddScoped<ITokenService, TokenService>();
 			Services.AddScoped<IAuthService, AuthService>();
+			Services.AddScoped<IOrderService, OrderService>();
 
 			return Services;
 		}
@@ -27,6 +28,7 @@ namespace Talabat.Service.Extensions
 				cfg.AddProfile<ProductProfile>();
 				cfg.AddProfile<BasketProfile>();
 				cfg.AddProfile<AddressProfile>();
+				cfg.AddProfile<OrderProfile>();
 			});
 
 			Services.AddScoped<ProductPictureUrlResolver>();
