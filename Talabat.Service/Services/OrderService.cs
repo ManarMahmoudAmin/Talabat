@@ -41,7 +41,7 @@ namespace Talabat.Service.Services
 
 			var DeliveryMethod = await _unitOfWork.Repository<DeliveryMethod, int>().GetAsync(DeliveryMethodId);
 
-			var SubTotal = OrderItems.Sum(item => item.Qauntity * item.Price);
+			var SubTotal = OrderItems.Sum(item => item.Quantity * item.Price);
 
 			var Order = new Order(BuyerEmail, ShippingAddress, DeliveryMethod, OrderItems, SubTotal);
 

@@ -15,12 +15,12 @@ namespace Talabat.Core.Entities.OrderModule
 		public OrderItem(ProductItemOrdered product, int qauntity, decimal price)
 		{
 			Product = product;
-			Qauntity = qauntity;
+			Quantity = qauntity;
 			Price = price;
 		}
 
 		public ProductItemOrdered Product { get; set; }
-		public int Qauntity { get; set; }
+		public int Quantity { get; set; }
 		public decimal Price { get; set; }
 
 	}

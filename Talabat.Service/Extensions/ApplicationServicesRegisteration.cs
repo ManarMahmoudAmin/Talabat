@@ -32,6 +32,7 @@ namespace Talabat.Service.Extensions
 			});
 
 			Services.AddScoped<ProductPictureUrlResolver>();
+			Services.AddScoped<OrderItemPictureUrlResolver>();
 
 			return Services;
 		}
