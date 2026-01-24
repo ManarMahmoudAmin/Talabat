@@ -60,5 +60,12 @@ namespace Talabat.Service.Services
 			var Orders = await _unitOfWork.Repository<Order, int>().GetAllAsync(spec);
 			return Orders;
 		}
+
+		public async Task<Order> GetOrdersForSpecificUserByIdAsync(string BuyerEmail, int OrderId)
+		{
+			var spec = new OrderSpecifications(BuyerEmail, OrderId);
+			var Order = await _unitOfWork.Repository<Order, int>().GetAsync(spec);
+			return Order;
+		}
 	}
 }

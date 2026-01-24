@@ -55,5 +55,21 @@ namespace Talabat.API.Controllers
 			return Ok(MappedOrders);
 		}
 
+
+		[ProducesResponseType(typeof(OrderToReturnDto), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ErrorToReturn), StatusCodes.Status404NotFound)]
+		[HttpGet("{id}")]
+		[Authorize]
+		public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id)
+		{
+			var BuyerEmail = User.FindFirstValue(ClaimTypes.Email);
+			var Order = await _orderService.GetOrdersForSpecificUserByIdAsync(BuyerEmail, id);
+			if (Order is null)
+				throw new OrderNotFoundException($"No Order Found For This User with ID: {id}");
+
+			var MappedOrder = _mapper.Map<OrderToReturnDto>(Order);
+			return Ok(MappedOrder);
+		}
+
 	}
 }
