@@ -71,5 +71,13 @@ namespace Talabat.API.Controllers
 			return Ok(MappedOrder);
 		}
 
+		[ProducesResponseType(typeof(DeliveryMethod), StatusCodes.Status200OK)]
+		[HttpGet("DeliveryMethods")]
+		public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+		{
+			var DeliveryMethods = await _orderService.GetDeliveryMethodsAsync();
+			return Ok(DeliveryMethods);
+		}
+
 	}
 }
