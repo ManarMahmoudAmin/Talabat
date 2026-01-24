@@ -19,7 +19,7 @@ namespace Talabat.Repository.Repositories
 		{
 			_context = context;
 		}
-		public async Task<IEnumerable<TEntity>> GetAllAsync()
+		public async Task<IReadOnlyList<TEntity>> GetAllAsync()
 		{
 		
 			return await _context.Set<TEntity>().ToListAsync();
@@ -46,7 +46,7 @@ namespace Talabat.Repository.Repositories
 		}
 
 		#region With Specifications
-		public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
+		public async Task<IReadOnlyList<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications)
 			=> await SpecificationsEvaluator.CreateQuery(_context.Set<TEntity>(), specifications).ToListAsync();
 		
 

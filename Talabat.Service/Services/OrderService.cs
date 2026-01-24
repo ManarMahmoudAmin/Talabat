@@ -8,6 +8,7 @@ using Talabat.Core.Entities.OrderModule;
 using Talabat.Core.Entities.ProductModule;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
+using Talabat.Repository.Specifications;
 
 namespace Talabat.Service.Services
 {
@@ -51,6 +52,13 @@ namespace Talabat.Service.Services
 			if (Result <= 0)
 				return null;
 			return Order;
+		}
+
+		public async Task<IReadOnlyList<Order>> GetOrdersForSpecificUserAsync(string BuyerEmail)
+		{
+			var spec = new OrderSpecifications(BuyerEmail);
+			var Orders = await _unitOfWork.Repository<Order, int>().GetAllAsync(spec);
+			return Orders;
 		}
 	}
 }
