@@ -17,6 +17,7 @@ namespace Talabat.Service.Extensions
 			Services.AddScoped<ITokenService, TokenService>();
 			Services.AddScoped<IAuthService, AuthService>();
 			Services.AddScoped<IOrderService, OrderService>();
+			Services.AddScoped<IPaymentService, PaymentService>();
 
 			return Services;
 		}

@@ -11,7 +11,7 @@ namespace Talabat.Core.Dtos.BasketDtos
 		public string PrdouctName { get; set; } = default!;
 		[Required]
 
-		public string PictureUtl { get; set; } = default!;
+		public string PictureUrl { get; set; } = default!;
 
 		[Required]
 		[Range(0.1, double.MaxValue, ErrorMessage ="Price Can not be Zero")]
