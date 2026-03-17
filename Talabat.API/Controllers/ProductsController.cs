@@ -35,7 +35,7 @@ namespace Talabat.API.Controllers
 			return Ok(result);
 		}
 
-		[HttpGet("types")]
+		[HttpGet("categories")]
 		public async Task<IActionResult> GetAllTypes()
 		{
 			var result = await _productService.GetAllTypesAsync();

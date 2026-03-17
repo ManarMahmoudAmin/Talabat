@@ -11,7 +11,6 @@ namespace Talabat.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
 	public class PaymentController : ControllerBase
 	{
 		private readonly IPaymentService _paymentService;
@@ -21,7 +20,8 @@ namespace Talabat.API.Controllers
 			_paymentService = paymentService;
 		}
 
-		[HttpGet("{basketId}")]
+		[Authorize]
+		[HttpPost("{basketId}")]
 		public async Task<ActionResult<BasketDto>> CreateOrUpdatePaymen(string basketId)
 		{
 			var basket = await _paymentService.CreateOrUpdatePaymentIntent(basketId);

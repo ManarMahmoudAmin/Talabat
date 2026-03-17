@@ -1,29 +1,6 @@
-
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using StackExchange.Redis;
-using System.Text;
-using Talabat.API.CustomMiddlewares;
 using Talabat.API.Extensions;
-using Talabat.API.Factories;
-using Talabat.Core.Entities.IdentityModule;
-using Talabat.Core.Repositories.Contract;
-using Talabat.Core.Services.Contract;
-using Talabat.Core.Shared.ErrorModels;
 using Talabat.Repository;
-using Talabat.Repository.Data;
-using Talabat.Repository.Identity;
-using Talabat.Repository.Repositories;
 using Talabat.Service.Extensions;
-using Talabat.Service.Mapping;
-using Talabat.Service.Mapping.Profiles;
-using Talabat.Service.Mapping.Resolvers;
-using Talabat.Service.Services;
 
 namespace Talabat.API
 {
@@ -46,6 +23,16 @@ namespace Talabat.API
 
 			builder.Services.AddIdentityServices(builder.Configuration);
 
+			builder.Services.AddCors(Options =>
+			{
+				Options.AddPolicy("MyPolicy", op =>
+				{
+					op.AllowAnyHeader();
+					op.AllowAnyMethod();
+					op.WithOrigins(builder.Configuration["FrontBaseUrl"]);
+				});
+			});
+
 			var app = builder.Build();
 			await app.SeedDataAsync();
 			
@@ -59,6 +46,7 @@ namespace Talabat.API
 			}
 			app.UseStaticFiles();
 
+			app.UseCors("MyPolicy");
 			app.UseAuthentication();
             app.UseAuthorization();
 

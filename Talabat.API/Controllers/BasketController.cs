@@ -19,9 +19,10 @@ namespace Talabat.API.Controllers
 
 		[HttpGet]
 		// GET: api/Basket?Key
-		public async Task<ActionResult<BasketDto>> GetBasket(string Key)
+		public async Task<ActionResult<BasketDto>> GetBasket(string id)
 		{
-			var basket = await _basketService.GetBasketAsync(Key);
+			var basket = await _basketService.GetBasketAsync(id);
+			if (basket == null) return Ok(new BasketDto { Id = id });
 			return Ok(basket);
 		}
 
@@ -33,11 +34,11 @@ namespace Talabat.API.Controllers
 			return Ok(Basket);
 		}
 
-		[HttpDelete("{Key}")]
+		[HttpDelete]
 		// DELETE: api/Basket
-		public async Task<ActionResult<bool>> DeleteBasketAsync(string Key)
+		public async Task<ActionResult<bool>> DeleteBasketAsync(string id)
 		{
-			var Result = await _basketService.DeleteBasketAsync(Key);
+			var Result = await _basketService.DeleteBasketAsync(id);
 			return Ok(Result);
 		}
 

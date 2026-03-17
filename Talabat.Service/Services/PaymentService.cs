@@ -33,10 +33,10 @@ namespace Talabat.Service.Services
 			StripeConfiguration.ApiKey = _configuration["StripeSettings:SecretKey"];
 
 			var basket = await _basketRepo.GetBasketAsync(BaskedId);
-			var shippingPrice = 0m;
-
 			if (basket is null)
 				return null;
+
+			var shippingPrice = 0m;
 
 			if(basket.Items?.Count > 0)
 			{

@@ -8,7 +8,7 @@ namespace Talabat.Core.Dtos.BasketDtos
 		public int Id { get; set; }
 		[Required]
 
-		public string PrdouctName { get; set; } = default!;
+		public string ProductName { get; set; } = default!;
 		[Required]
 
 		public string PictureUrl { get; set; } = default!;

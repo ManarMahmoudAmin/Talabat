@@ -11,16 +11,16 @@ namespace Talabat.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AccountsController : ControllerBase
+	public class AccountController : ControllerBase
 	{
 		private readonly IAuthService _authService;
 
-		public AccountsController(IAuthService authService)
+		public AccountController(IAuthService authService)
 		{
 			_authService = authService;
 		}
 
-		// POST: api/Accounts/Login
+		// POST: api/Account/Login
 		[HttpPost("Login")]
 		public async Task<ActionResult<UserDto>> Login(LoginDto model)
 		{
@@ -55,14 +55,14 @@ namespace Talabat.API.Controllers
 
 		//GET : api/Accounts/CurrentUserAddress
 		[Authorize]
-		[HttpGet("CurrentUserAddress")]
+		[HttpGet("address")]
 		public async Task<ActionResult<AddressDto>> GetCurrentUserAddress()
 		{
 			var result = await _authService.GetCurrentUserAddress(User);
 			return Ok(result);
 		}
 
-		//PUT : api/Accounts/Address
+		//PUT : api/Account/Address
 		[Authorize]
 		[HttpPut("Address")]
 		public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto updatedAddress)
@@ -71,7 +71,7 @@ namespace Talabat.API.Controllers
 			return Ok(result);
 		}
 
-		//GET : api/Accounts/EmailExists
+		//GET : api/Account/EmailExists
 		[HttpGet("EmailExists")]
 		public async Task<ActionResult<bool>> CheckEmailExists(string email)
 		{

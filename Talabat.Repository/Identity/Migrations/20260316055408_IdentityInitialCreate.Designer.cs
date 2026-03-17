@@ -12,8 +12,8 @@ using Talabat.Repository.Identity;
 namespace Talabat.Repository.Identity.Migrations
 {
     [DbContext(typeof(StoreIdentityDbContext))]
-    [Migration("20260124004721_CorrectMisspelledColumn")]
-    partial class CorrectMisspelledColumn
+    [Migration("20260316055408_IdentityInitialCreate")]
+    partial class IdentityInitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -111,8 +111,14 @@ namespace Talabat.Service.Services
 		public async Task<AddressDto> UpdateUserAddress(ClaimsPrincipal User, AddressDto updatedAddress)
 		{
 			var user = await _userManager.FindUserWithAddressAsync(User);
+			if (user == null) 
+				throw new UnauthorizedException("User not found");
 			var mappedAddress = _mapper.Map<Address>(updatedAddress);
-			mappedAddress.Id = user.Address.Id;
+			if (user.Address != null)
+			{
+
+				mappedAddress.Id = user.Address.Id;
+			}
 			user.Address = mappedAddress;
 			var result = await _userManager.UpdateAsync(user);
 			if (!result.Succeeded)
